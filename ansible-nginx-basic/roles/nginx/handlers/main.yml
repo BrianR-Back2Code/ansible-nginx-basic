@@ -1,0 +1,12 @@
+---
+# Handler für Nginx
+
+# Dieser Handler wird aufgerufen, wenn ein Task mit "notify: Restart Nginx" beendet wird
+# und der Task tatsächlich eine Änderung bewirkt hat.
+# Er startet den Nginx-Dienst neu, damit Änderungen wirksam werden.
+
+- name: Restart Nginx
+  service:
+    name: nginx             # Name des Dienstes
+    state: restarted        # Aktion: Dienst neustarten
+  become: yes               # mit Root-Rechten ausführen

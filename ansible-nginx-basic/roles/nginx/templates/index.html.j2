@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>{{ site_name }}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        h1 {
+            color: {{ heading_color }};
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+        .info-box {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            padding: 15px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        footer {
+            margin-top: 30px;
+            color: #777;
+            font-size: 0.9em;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ site_name }}</h1>
+    <p>{{ site_description }}</p>
+    
+    <div class="info-box">
+        <h2>Server-Informationen</h2>
+        <ul>
+            <li><strong>Hostname:</strong> {{ ansible_hostname }}</li>
+            <li><strong>IP-Adresse:</strong> {{ ansible_default_ipv4.address }}</li>
+            <li><strong>Betriebssystem:</strong> {{ ansible_distribution }} {{ ansible_distribution_version }}</li>
+            <li><strong>Datum der Bereitstellung:</strong> {{ ansible_date_time.date }}</li>
+        </ul>
+    </div>
+    
+    <footer>
+        Diese Seite wurde automatisch mit Ansible erstellt.
+    </footer>
+</body>
+</html>

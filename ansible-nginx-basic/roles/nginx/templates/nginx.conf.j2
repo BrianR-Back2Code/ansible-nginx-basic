@@ -1,0 +1,24 @@
+# Einfache Nginx-Konfiguration für unsere Demo
+# Erstellt mit Ansible auf {{ ansible_hostname }}
+
+server {
+    # Höre auf Port {{ nginx_port }}
+    listen {{ nginx_port }} default_server;
+    listen [::]:{{ nginx_port }} default_server;
+
+    # Root-Verzeichnis für die Webseite
+    root {{ web_root }};
+    
+    # Standard-Dateien, die gesucht werden sollen
+    index index.html index.htm;
+
+    # Server-Name (localhost)
+    server_name _;
+
+    # Konfiguration für den Root-Pfad
+    location / {
+        # Versuche zuerst die angeforderte URI, dann die URI mit einem Slash am Ende,
+        # bei Misserfolg gib einen 404-Fehler zurück
+        try_files $uri $uri/ =404;
+    }
+}

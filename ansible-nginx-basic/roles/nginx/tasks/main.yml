@@ -1,0 +1,51 @@
+---
+# Tasks zur Installation und Konfiguration von Nginx
+
+# Task 1: APT-Paketindex aktualisieren
+# Dieser Schritt stellt sicher, dass wir die neuesten Paketversionen erhalten
+- name: Update apt cache
+  apt:
+    update_cache: yes       # entspricht 'apt update'
+    cache_valid_time: 3600  # Cache ist für 1 Stunde gültig
+  become: yes               # mit Root-Rechten ausführen
+
+# Task 2: Nginx installieren
+# Mit diesem Task installieren wir den Nginx-Webserver
+- name: Install Nginx
+  apt:
+    name: nginx             # Name des zu installierenden Pakets
+    state: present          # 'present' bedeutet, dass das Paket installiert sein soll
+  become: yes               # mit Root-Rechten ausführen
+
+# Task 3: Eine benutzerdefinierte index.html-Datei erstellen
+# Wir verwenden ein Template, um dynamische Inhalte einzufügen
+- name: Create custom index.html
+  template:
+    src: index.html.j2      # Quelle (Jinja2-Template)
+    dest: "{{ web_root }}/index.html"  # Ziel auf dem Server
+    owner: www-data         # Besitzer der Datei (Nginx-Benutzer)
+    group: www-data         # Gruppe der Datei
+    mode: '0644'            # Dateirechte (lesbar für alle, schreibbar für Besitzer)
+  become: yes               # mit Root-Rechten ausführen
+  notify: Restart Nginx     # benachrichtigt den Handler "Restart Nginx"
+                            # dieser wird nur ausgeführt, wenn die Datei geändert wurde
+
+# Task 4: Eine einfache Nginx-Konfigurationsdatei erstellen
+# Wir überschreiben die Standard-Konfiguration mit unserer eigenen
+- name: Configure Nginx
+  template:
+    src: nginx.conf.j2      # Quelle (Jinja2-Template)
+    dest: /etc/nginx/sites-available/default  # Ziel auf dem Server
+    owner: root             # Besitzer der Datei
+    group: root             # Gruppe der Datei
+    mode: '0644'            # Dateirechte
+  become: yes               # mit Root-Rechten ausführen
+  notify: Restart Nginx     # benachrichtigt den Handler "Restart Nginx"
+
+# Task 5: Stelle sicher, dass Nginx läuft und beim Systemstart aktiviert ist
+- name: Ensure Nginx is running and enabled
+  service:
+    name: nginx             # Name des Dienstes
+    state: started          # Dienst soll laufen
+    enabled: yes            # Dienst soll beim Systemstart aktiviert sein
+  become: yes               # mit Root-Rechten ausführen

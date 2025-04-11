@@ -1,0 +1,22 @@
+---
+# Einfaches Playbook zur Installation und Konfiguration von Nginx
+
+- name: Setup Nginx Server
+  hosts: webserver       # Zielgruppe aus dem Inventory
+  gather_facts: yes      # Sammle Informationen über den Zielserver
+
+  # Abschnitt 1: Pre-Tasks - werden vor den Rollen ausgeführt
+  pre_tasks:
+    - name: Ankündigung
+      debug:
+        msg: "Starte Nginx-Installation und -Konfiguration..."
+
+  # Abschnitt 2: Rollen - die Hauptfunktionalität
+  roles:
+    - nginx
+
+  # Abschnitt 3: Post-Tasks - werden nach den Rollen ausgeführt
+  post_tasks:
+    - name: Erfolg melden
+      debug:
+        msg: "Nginx wurde konfiguriert und läuft. Du kannst die Seite unter http://localhost aufrufen."

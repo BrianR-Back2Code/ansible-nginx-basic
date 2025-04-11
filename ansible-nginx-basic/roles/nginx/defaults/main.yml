@@ -1,0 +1,17 @@
+---
+# Einfache Variablen für unseren Nginx-Server
+
+# Der Name unserer Website
+site_name: "Meine Ansible Demo-Seite"
+
+# Eine kurze Beschreibung
+site_description: "Diese Seite wurde mit Ansible bereitgestellt"
+
+# Die Farbe der Überschrift
+heading_color: "#2573CF"
+
+# Der Port, auf dem Nginx laufen soll
+nginx_port: 80
+
+# Der Pfad zum Webroot
+web_root: /var/www/html

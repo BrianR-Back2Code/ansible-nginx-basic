@@ -1,0 +1,22 @@
+---
+# Einfaches Playbook zum Entfernen von Nginx
+
+- name: Remove Nginx
+  hosts: webserver
+  become: yes
+  
+  tasks:
+    - name: Stop Nginx service
+      service:
+        name: nginx
+        state: stopped
+      
+    - name: Remove Nginx package
+      apt:
+        name: nginx
+        state: absent
+        
+    - name: Remove index.html
+      file:
+        path: /var/www/html/index.html
+        state: absent
